@@ -41,12 +41,12 @@ print(new_nums)
 
 from random import randint
 
-k = int(input('Введите натуральную степень многочлена (наивысшая степень в полиноме): '))
+power = int(input('Введите натуральную степень многочлена (наивысшая степень в полиноме): '))
 
 
-def polinom(k):
-    with open('file2.txt', 'w') as polinom:
-        for i in range(k, -1, -1):
+def polinom(power):
+    with open('file1.txt', 'w') as polinom:
+        for i in range(power, -1, -1):
             if i > 0:
                 koef = randint(0, 100)
                 if koef > 0:
@@ -60,7 +60,7 @@ def polinom(k):
                 else:
                     polinom.write(' =0')
 
-#print(polinom(k))
+#print(polinom(power))
 
 # Даны два файла, в каждом из которых находится запись многочлена. Задача - сформировать файл, содержащий сумму многочленов.
 
@@ -75,38 +75,41 @@ print(my_list1)
 print(my_list2)
 koefs1 = []
 koefs2 = []
+dictionary1 = {}
+dictionary2 = {}
+print(dictionary1)
 
 for index in range(len(my_list1)):
     k = my_list1[index]
     if len(k) == 6:
-        koefs1.append(k[0:3])
+        dictionary1[k[5:]] = k[0:3]
     if len(k) == 4:
-        koefs1.append(k[0:1])
+        dictionary1[k[3:]] = k[0:1]
     else:
-        koefs1.append(k[0:2])
-
-print(koefs1)
+        dictionary1[k[4:]] = k[0:2]
 
 for index in range(len(my_list2)):
     k = my_list2[index]
     if len(k) == 6:
-        koefs2.append(k[0:3])
+        dictionary2[k[5:]] = k[0:3]
     if len(k) == 4:
-        koefs2.append(k[0:1])
+        dictionary2[k[3:]] = k[0:1]
     else:
-        koefs2.append(k[0:2])
+        dictionary2[k[4:]] = k[0:2]
+print(dictionary1)
+print(dictionary2)
 
-print(koefs2)
+
+#print(dictionary1.get('0'))
 
 koefs = []
-koefs = [(int(koefs1[i]) + int(koefs2[i])) for i in range(len(koefs1))]
+koefs = [(int(dictionary1.get(f'{i}')) + int(dictionary2.get(f'{i}'))) for i in range(power, -1, -1)]
 print(koefs)
-
 with open('file3.txt', 'w') as two_polinom:
     for i in range(len(koefs)):
-        if i < 4:
+        if i < power - 1:
             two_polinom.write(f'{str(koefs[i])}x^{str(len(koefs) - 1 - i)} + ')
-        elif i == 4:
+        elif i == power - 1:
             two_polinom.write(f'{str(koefs[i])}x + ')
         else:
             two_polinom.write(f'{str(koefs[i])} = 0')
